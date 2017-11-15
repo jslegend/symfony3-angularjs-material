@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        .material-icons {
+            cursor: pointer;
+        }
+        p {
+            cursor: move;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<md-content ng-app="treeApp" ng-controller="Ctrl" layout="row" layout-align="space-around" layout-padding="layout-padding" ng-cloak="ng-cloak">
+    {% verbatim %}
+    <script type="text/ng-template" id="treeview.html">
+        <md-list-item>
+            <p>
+                <md-icon class="material-icons" ng-if="item.items" ng-click="toggleItems(item)">
+                    <i class="material-icons">{{ item.expanded ? 'expand_less' : 'expand_more' }}</i>
+                </md-icon>
+                {{ item.title }}
+            </p>
+            <!-- <a data-nodrag ng-click="remove(this)">Delete</a>&nbsp; | &nbsp;
+            <a  data-nodrag ng-click="newSubItem(this)" style="margin-right: 8px;">Add</a> -->
+        </md-list-item>
+        <md-list flex ng-if="item.items" ng-show="item.expanded">
+            <div ng-repeat="item in item.items" ng-include="'treeview.html'"></div>
+        </md-list>
+    </script>
+    {% endverbatim %}
+    <md-card flex="flex" flex-gt-sm="50" flex-gt-md="33">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>TreeView emulation</h2>
+            </div>
+        </md-toolbar>
+        <md-card-content>
+            <button ng-click="expandAll()">Expand all</button>
+            <button ng-click="collapseAll()">Collapse all</button>
+            <md-list>
+                <div ng-repeat="item in items" ng-include="'treeview.html'"></div>
+            </md-list>
+        </md-card-content>
+    </md-card>
+</md-content>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    (function(A) {
+        "use strict";
+
+        var app = A.module('treeApp', ['ngMaterial']),
+        ids = 1;
+
+        function getId() {
+            return ids++;
+        }
+
+        function createItems(count) {
+            var i, id, items = [];
+            for (i = 0; i < count; i += 1) {
+                id = getId();
+                items.push({
+                    id: id,
+                    title: 'Folder #' + id,
+                    items: id % 4
+                });
+            }
+            return items;
+        }
+
+        app.controller('Ctrl', ['$scope', '$timeout', '$templateCache', function($scope, $timeout, $templateCache) {
+            // $templateCache.put('treeview.html', 'abc');
+            $scope.items = createItems(6);
+            $scope.remove = function (scope) {
+                scope.remove();
+            };
+            $scope.toggleItems = function(item) {
+                if (item.items) {
+                    if (A.isArray(item.items)) {
+                        item.expanded = !item.expanded;
+                    } else {
+                        $timeout(function() {
+                            item.items = createItems(Math.floor(Math.random(4)) + 3);
+                            item.expanded = true;
+                        }, 500);
+                    }
+                }
+            };
+        }]);
+    }(this.angular));
+</script>
+{% endblock %}
