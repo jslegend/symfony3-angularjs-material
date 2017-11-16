@@ -12,13 +12,13 @@ git clone https://github.com/jslegend/symfony3-angularjs-material.git
 - Install XAMPP on Windows 10.
 
 - Set Virtual Host
-1.
+
 Open file - C:\Windows\System32\drivers\etc\hosts
 Add following string to set virtual host
 
 127.0.0.1	mytest.com
 
-2.Go to your XAMPP folder
+Go to your XAMPP folder
 Open file - C:/XAMPP/apache/conf/extra/httpd-vhosts.conf
 And add followings.
 
@@ -35,5 +35,5 @@ And add followings.
         </Directory>
 </VirtualHost>
 
-3. Run your Apache service.
+Run your Apache service.
 Open your browser and input "mytest.com" to open the site.
