@@ -46,8 +46,8 @@ And add followings.
           Allow from all
           
         </Directory>
-        
-</VirtualHost>
+    </VirtualHost>
+
 
 Run your Apache service.
 
